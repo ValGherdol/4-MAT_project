@@ -776,7 +776,7 @@ if 3 in L_etapes :
         L_dico_N.append(D_temp)
 
     ### Sauvegarde des gènes candidats
-    file_name = "Result_3b_CVI_CandidateGenes.txt"
+    file_name = "Result_3b_NPC_CandidateGenes.txt"
     headers = ['ID_REF']
     for label in L_labels : headers.append(f"#{label}_Neighbors")
     headers.append("#UniqueNeighbors")
@@ -861,7 +861,7 @@ if 3 in L_etapes :
         CE_map.append(L_weights[w-1])
 #alt        CE_map.append((L_weights[w-1],L_weights[w-1],L_weights[w-1]))
 
-    graph_file = "Result_3c_CVI_graph.txt"
+    graph_file = "Result_3c_NPC_graph.txt"
     with open(graph_file,'w') as file :
         for i,node in enumerate(list(G.nodes)) : file.write(f">{node}:{CN_map[i]}\n")
         for i,(n1,n2) in enumerate(list(G.edges)) : file.write(f"{n1} {n2} weight:{WE_map[i]}\n")
@@ -1105,7 +1105,7 @@ if consensus :
         
         # Tri des voisins (nombre de méthodes, localisation)
 #        sous_D = {'#1-Method':0,'#2-Methods':0,'#3-Methods':0,'#4-Methods':0,
-#                  'RICEP':0,'KNN-RBH':0,'CVI-1':0,'CVI-2':0,'CVI-3':0,'CP':0}
+#                  'RICEP':0,'KNN-RBH':0,'NPC-1':0,'NPC-2':0,'NPC-3':0,'CP':0}
 
         sous_D = {}
         for m in L_n_method : sous_D[m] = 0
