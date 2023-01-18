@@ -1,5 +1,4 @@
 # 4-MAT_project
-Contains all necessary files to run the 4-MAT program and get the initial results.
 
 This README explains the content and proper usage of the 4-MAT package.
 The 4-MAT package's goal is to subject transcriptomic data to a multi-method analysis in order to find statistically relevant links between genes of interest (anchors) who play a known role in given metabolic pathways and candidats genes who may have a yet unknown role in those pathways.
