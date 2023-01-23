@@ -12,7 +12,7 @@
 >>> Initial data
 > (1) MANDATORY : A text file listing the pool of genes shared by all provided datasets. 
 > (2) MANDATORY : A set of text files (each separated by a coma ',') listing genes of interest from different categories. All genes from these lists don't have 
->		  to be in the global gene pool but it is highly advised that a given gene do not be in more than one list. You can also put the word 'None' if
+>		  to be in the global gene pool but it is highly advised that a given gene is not in more than one list. You can also put the word 'None' if
 >		  you don't have any genes of interest.
 > (3) OPTIONAL : A set of labels (each separated by a coma ',') to differenciate the categories of anchor genes.
 >		 CAUTION : If you provide a custom value, make sure to give as much labels as you gave lists of anchor genes.
