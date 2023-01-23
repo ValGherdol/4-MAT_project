@@ -33,10 +33,10 @@
 >		 CAUTION 2 : If you don't provide any anchor genes, the dictionary will be filled with the results for all genes in the global pool.
 >	Default value = the creation of a new empty dictionnary.
 Global gene pool : Pool_9103.txt
-Anchor Genes lists : None
+Anchor Genes lists : Pool_Dormance.txt,Pool_Germination.txt
 Anchor Genes labels : Dormancy,Germination
 Anchor colors : 0,1,1/1,0.5,0
-Steps list : 2,4
+Steps list : 1,2,3,4
 Consensus step : 1
 Linkage dictionary : default
 
@@ -65,7 +65,7 @@ Linkage dictionary : default
 > (9) TRIVIAL : A Boolean-like Integer indicating if you wish to calculate a new Co-Expression network or load a preexisting one (0=Load , 1=Calculate new one).
 Anchor centered : 1
 Pearson principal threshold : 0
-Pearson dynamic threshold : 1
+Pearson dynamic threshold : 1.5
 Dynamic threshold factor : default
 Neighborhood threshold : default
 Minimum neighborhood 1 : default
