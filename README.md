@@ -16,8 +16,8 @@ This package folder initially contains the following files (arranged by type):
 
 - Python files :
 	- Program_XXXX_YY_ZZ.py : the core code file of the package. The XYZ characters stands for the date of the lastest update.
-	- Stage_functions.py : the first auxiliary code file containing most of the program's functions' definitions.
-	- CVI_functions.py : the seconde auxiliary code file containing the functions' definitions for the NPC analysis step.
+	- Steps_functions.py : the first auxiliary code file containing most of the program's functions' definitions.
+	- NPC_functions.py : the seconde auxiliary code file containing the functions' definitions for the NPC analysis step.
 - Text files :
 	- Arguments.txt : this file describs the settings of the program and how to customize them.
 	- Pool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
