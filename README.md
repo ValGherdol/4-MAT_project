@@ -15,7 +15,7 @@ Package usage rules :
 This package folder initially contains the following files (arranged by type):
 
 - Python files :
-	- Program_XXXX_YY_ZZ.py : the core code file of the package. The XYZ characters stands for the date of the lastest update.
+	- 4-MAT_XXXX_YY_ZZ.py : the core code file of the package. The XYZ characters stands for the date of the lastest update.
 	- Steps_functions.py : the first auxiliary code file containing most of the program's functions' definitions.
 	- NPC_functions.py : the seconde auxiliary code file containing the functions' definitions for the NPC analysis step.
 - Text files :
