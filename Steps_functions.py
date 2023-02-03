@@ -1812,7 +1812,7 @@ def ThresholdedCrossNetworkConstancy_5(dataframe_list , gene_list=None , anchor_
     #            print("\n--------------------\n")
             if search_tps :
                 if (i+1)%1000 == 0 : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1}). Temps depuis lancement : {time_count(time.time()-start)}")
-                else : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1})")
+                else : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1}/{len(gene_list)})")
 
     else : # S'il y a une liste de points d'intérêt <=> on ne calcule que les corrélations des couples qui incluent au moins un point d'intérêt
         for i,n1 in enumerate(anchor_list): # Pour chaque point de la liste d'intérêt
@@ -1866,7 +1866,7 @@ def ThresholdedCrossNetworkConstancy_5(dataframe_list , gene_list=None , anchor_
     #            print("\n--------------------\n")
             if search_tps :
                 if (i+1)%1000 == 0 : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1}). Temps depuis lancement : {time_count(time.time()-start)}")
-                else : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1})")
+                else : print(f"Noeud {n1} traité en {time_count(time.time()-t_node)} ({i+1}/{len(anchor_list)})")
 
     if global_tps : 
         print(f"Intersection initiale terminée. {len(G.edges)} arêtes ont été retenues.")

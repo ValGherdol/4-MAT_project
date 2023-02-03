@@ -65,10 +65,10 @@ Linkage dictionary : default
 > (9) TRIVIAL : A Boolean-like Integer indicating if you wish to calculate a new Co-Expression network or load a preexisting one (0=Load , 1=Calculate new one).
 Anchor centered : 1
 Pearson principal threshold : 0
-Pearson dynamic threshold : 1.5
-Dynamic threshold factor : default
+Pearson dynamic threshold : 1
+Dynamic threshold factor : 1.5
 Neighborhood threshold : default
-Minimum neighborhood 1 : default
+Minimum neighborhood P-CEIN : default
 Research time announcement : 1
 Global time announcement : 1
 New Network : 1
@@ -87,15 +87,24 @@ New Network : 1
 KNN version : KNN_2
 RBH sub-step : 1
 Number of neighbors : default
-Threshold factor : default
+Threshold factor KNN_2 : default
 
->>> Step 3 : Candidates by Neighborhood of Interest (CNI) | This step needs at least one anchor genes list to proprely run.
-> (1) MANDATORY : A set of Integers (separated by a coma ',') indicating the minimum number of anchor gene neighbors a candidate gene has to have
+>>> Step 3 : Network Properties Closeness (NPC) | This step needs at least one anchor genes list to proprely run.
+> (1) MANDATORY : The version of the test to keep or remove edges in the initial graph before the properties analysis. Version 'Unilateral' keeps a given
+>		  edge if the pairwise distance between it's two genes checks the threshold of at least one of the two genes. Version 'Bilateral' keeps
+>		  a given edge if the distance checks both genes' threshold
+> (2) OPTIONAL : A Float or set of Floats (each separated by a coma ',') indicating the multiplication factor to use when calculating the distance threshold 
+>		 for the genes. A single Float means the same factor is used for all datasets. A set of Floats means each factor is used for the corresponding 
+>		 dataset in the provided order.
+>	Default value = 1 for all datasets.
+> (3) MANDATORY : A set of Integers (separated by a coma ',') indicating the minimum number of anchor gene neighbors a candidate gene has to have
 >		  in order to be considered worthy of further studies on it. Each integer is associated to the anchor gene list in the same position.
-> (2) OPTIONAL : An Integer indicating the minimum number of datasets in which a same candidate gene has to be found for it to be considered relevant.
+> (4) OPTIONAL : An Integer indicating the minimum number of datasets in which a same candidate gene has to be found for it to be considered relevant.
 >	Default value = candidates have to be found in all provided datasets to be considered relevant.
-Minimum neighborhood 3 : 3,2
-Minimum redundancy : 1
+Filter version : Bilateral
+Threshold factor NPC : -1
+Minimum neighborhood NPC : 3,2
+Minimum redundancy : default
 
 >>> Step 4 : Cluster Path
 > (1) OPTIONAL : An Integer indicating the number of clusters you wish to calculate for each timepoint of each provided dataset.
