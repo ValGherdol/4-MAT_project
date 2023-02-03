@@ -16,7 +16,7 @@ from scipy.spatial import distance
 import networkx as nx
 import pickle
 import Steps_functions as fnc
-import NPC_functions_2_Val as NPC
+import NPC_functions as NPC
 import warnings
 warnings.filterwarnings("ignore")
 
