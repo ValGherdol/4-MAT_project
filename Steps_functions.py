@@ -16,7 +16,7 @@ import networkx as nx
 #=====================================================================
 #=====================================================================
 
-# Liste des fonctions présentes ici :
+# Liste of the functions defined in this file :
 #   - time_count
 #   - PearsonGraph
 #   - PearsonGraph_2
@@ -78,6 +78,13 @@ import networkx as nx
 #=====================================================================
 
 def time_count(secondes) :
+    """
+    Receives a duration in seconds and gives back the equivalent in hours, minutes and seconds.
+    
+    input1 : A numeral value (in seconds)
+    
+    output1 : A string with hours, minutes and seconds (hours and minutes only if there is at least one of them)
+    """
     heures,minutes = 0,0
     temps = f""
     if secondes > 3600 :
@@ -420,36 +427,42 @@ def save_PearsonGraph_data(graph , dataframe_file='Data_PearsonGraph.csv' , anno
 
 #=====================================================================
 
-def save_PearsonGraph_data_2(graph , L_anchors_classes=[] , L_anchors_list=[] , dataframe_file='Data_PearsonGraph.csv' , annonce=None) :
-    # Fonction générant un dataframe des données générales d'un graph et l'enregistre dans un fichier csv.
-    # Arguments :
-    #   - Un graph.
-    #   - La liste des labels des points d'intérêt.
-    #   - La liste des listes de points d'intérêt.
-    #   - Le nom du fichier généré (défaut = Data_PearsonGraph.csv). [string]
-    #   - L'indicateur de demande d'affichage de progression (défaut = None).
-    #       - si None, pas d'affichage.
-    #       - si spécifié, affiche le nombre de points analysés à chaque modulo de la valeur spécifiée.
-    # Rendu :
-    #   - Le dataframe généré, avec les colonnes suivantes :
-    #       - 'ID_REF' : le nom des points du graph.
-    #       - 'Class' : la classe des points, qui sont soit des Ancre (points d'intérêt avec un label fourni), soit des Candidats.
-    #       - 'Nb_Edges' : le degré des points.
-    #       - 'Nb_Positives' : le nombre de voisins à corrélation positive.
-    #       - 'Nb_Negatives' : le nombre de voisins à corrélation négative.
-    #       - 'Pearson_Mean' : la moyenne des poids des arrêtes.
-    #       - 'Pearson_Std' : l'écart-type des poids des arrêtes.
-    #       - 'Pearson_Max' : le poids maximum parmi les arrêtes.
-    #       - 'Pearson_Min' : le poids minimum parmi les arrêtes.
+def save_PearsonGraph_data_2(graph , L_anchors_labels=[] , L_anchors_list=[] , dataframe_file='Data_PearsonGraph.csv' , annonce=None) :
+    """
+    Saves the general data of each node from a co-expression network.
+
+    input1 : A co-expression network in the form of a Networkx graph.
+    input2 : A list of gene labels (dafault value = an empty list).
+        If provided, the function will label some genes with the corresponding value and the rest of the genes with the word 'Candidate'.
+        If not, all genes will be labeled 'Candidate'.
+    input3 : A list of lists of genes (default value = an empty list).
+        If provided, the function will associate the label from input2 to the genes contained in the corresponding list.
+        THERE MUST BE AS MANY LISTS OF GENES AS THERE ARE LABELS. IF A GENE IS IN SEVERAL LISTS, IT WILL ALWAYS BE GIVEN THE LABEL OF THE FIRST LIST ITS ENCOUNTERED IN.
+    input4 : A name for the created file (default value = 'Data_PearsonGraph.csv').
+        If customized, make sure your file hase a csv extension.
+    input5 : A Integer value (default value = None).
+        If customized, the function will write on the console the number of genes saved every time this number is a multiple of the input value.
+        
+    output1 : a Pandas dataframe with the following data for each gene :
+        - the gene's name (column 'ID_REF')
+        - the gene's label (column 'Label')
+        - the gene's degree, a.k.a it's number of neighbors linked by an edge (column 'Nb_Edges')
+        - the gene's number of positive correlations (column 'Nb_Positives')
+        - the gene's number of negative correlations (column 'Nb_Negatives')
+        - the gene's average Pearson's Correlation Coefficient in absolute value (column 'Pearson_Mean')
+        - the gene's standard deviation of PCCs in absolute value (column 'Pearson_Std')
+        - the gene's maximum PCC in absolute value (column 'Pearson_Max')
+        - the gene's minimum PCC in absolute value (column 'Pearson_Min')
+    """
 
     L_nodes = list(graph.nodes)
-    Data = {'ID_REF':[] , 'Class':[] ,
+    Data = {'ID_REF':[] , 'Label':[] ,
             'Nb_Anchor_Neighbors':[],'Nb_Edges':[] ,
             'Nb_Positives':[] , 'Nb_Negatives':[] ,
             'Pearson_Mean':[] , 'Pearson_Std' :[] ,
             'Pearson_Max':[] , 'Pearson_Min':[]}
     for i,n1 in enumerate(L_nodes):
-        LN_anchors = [0 for i in range(len(L_anchors_classes))]
+        LN_anchors = [0 for i in range(len(L_anchors_labels))]
         L_Pearson = []
         nb_pos,nb_neg = 0,0
         for n2,attr in graph[n1].items():
@@ -483,10 +496,10 @@ def save_PearsonGraph_data_2(graph , L_anchors_classes=[] , L_anchors_list=[] , 
         cand = True
         for j,L_anchors in enumerate(L_anchors_list) :
             if n1 in L_anchors :
-                Data['Class'].append(L_anchors_classes[j])
+                Data['Label'].append(L_anchors_labels[j])
                 cand = False
                 break
-        if cand : Data['Class'].append('Candidate')
+        if cand : Data['Label'].append('Candidate')
         
         if annonce != None :
             if i%annonce == 0 : print(f"{i} points analysés")
@@ -545,6 +558,19 @@ def load_PearsonGraph(file_name , annonce=None):
 #=====================================================================
 
 def load_PearsonGraph_2(file_name , annonce=None):
+    """
+    Load a Networkx graph from a text file.
+    The file must be organized as follow :
+        - The nodes are indicated at the beginning of the file. Each line starts with a '>' followed by the node's name and it's color in an RGB format.
+        - The edges are indicated after the nodes. Each line indicates two genes' names and the attributes of the edges.
+
+    input1 : a text file that contains a graph.
+    input2 : an Integer value (default value = None).
+        If customized, the function will write on the console the number of edges loaded every time this number is a multiple of the input value.
+
+    output1 : the loaded graph
+    """
+    
     # Version 2 de la fonction précédante, celle-ci charge un graph à partir d'un fichier texte
     # contenant les listes de points et d'arêtes d'un graph.
     # Arguments :
@@ -1549,7 +1575,7 @@ def ThresholdedCrossNetworkConstancy_3(dataframe_list , gene_list=None , thresho
 #=====================================================================
 
 def ThresholdedCrossNetworkConstancy_4(dataframe_list , gene_list=None , threshold_Pearson=0.5 , 
-                                       threshold_neighbours=None , pass_attr=[] , search_tps=False ,
+                                       threshold_neighbours=None , search_tps=False ,
                                        global_tps=False , ret=False):
     # Version 4 de la fonction précédente, cette fonction génère un graphe d'intersection à partir de N datasets directement.
     # Parmi les M points renseignés, une arête entre deux points est générée si ces deux points montrent une corrélation
@@ -1701,40 +1727,34 @@ def ThresholdedCrossNetworkConstancy_4(dataframe_list , gene_list=None , thresho
 #=====================================================================
 
 def ThresholdedCrossNetworkConstancy_5(dataframe_list , gene_list=None , anchor_list=None , threshold_Pearson=0.5 , 
-                                       threshold_neighbours=None , pass_attr=[] , search_tps=False ,
-                                       global_tps=False , ret=False):
-    # Version 5 de la fonction précédente, cette fonction génère un graphe d'intersection à partir de N datasets directement.
-    # On lui renseigne une liste de M points présents dans les N datasets ainsi qu'une liste de X points d'intérêt présents dans les M.
-    # Pour chaque couple contenant au moins un point Xi, une arête est générée si le couple montre une corrélation significative et de même signe
-    # dans chacun des N datasets. L'arête prend alors pour poids la valeur moyenne de la corrélation et pour signe celui commun à toutes les corrélations.
-    # Une fois toutes les corrélations calculées, il est possible d'évaluer un palier dynamique qui va exclure toutes les corrélations ne le passant pas.
-    # Un palier T peut délimiter le nombre maximal de voisins qu'un point peut avoir, les voisins choisis sont ceux présentant le poids le plus important en valeur absolue.
-    # Arguments :
-    #   - Une liste de dataframes dont chaque ligne représente un gène et son vecteur de valeurs. [Liste de pandas.DataFrame]
-    #       !!! TOUS LES DATAFRAMES DOIVENT CONTENIR LA MÊME LISTE DE GENES (mais pas nécessairement dans le même ordre) !!!
-    #   - La liste des noms des points dont les corrélations doivent être recherchées. (défaut = None). [None ou Liste de string]
-    #       !!! TOUS LES POINTS FOURNIS DOIVENT ÊTRE TROUVABLE DANS TOUS LES DATAFRAMES !!!
-    #       Si défaut, la fonction prend en compte l'entièreté des points présents dans le premier dataframe de la liste fournie.
-    #   - La liste des noms des points d'intérêt dont au moins un doit être présent dans un couple pour que la corrélation soit calculée. (défaut = None). [None ou Liste de string]
-    #       !!! TOUS LES POINTS D'INTERET DOIVENT SE TROUVER DANS LA LISTE PRECEDENTE !!!
-    #   - Le ou les palier(s) de sélection principal/principaux au-dessus duquel/desquels on conserve un coefficient de corrélation de Pearson (défaut = 0.5). [Float ou liste de Floats]
-    #   - Le choix de calculer dynamiquement un second palier de sélection une fois toutes les corrélations moyennes obtenues. (défaut = False). [boolean]
-    #       Si True, le palier dynamique est calculé selon la formule P = moyenne + (facteur * écart-type)
-    #   - La valeur du facteur multiplicatif a prendre en compte lors du calcul du palier dynamique. (défaut = 1). [Float]
-    #   - Le nombre maximal de voisins qu'un point peut avoir (défaut = None). [None ou Int]
-    #       Si None, tous les points conservent l'ensemble de leurs voisins.
-    #       Si Int, les voisins de chaque points sont ordonnés par corrélation absolue décroissante et seules les T plus grandes sont conservées.
-    #       !!! LA CONSERVATION D'UNE ARÊTE EST IMPLICITEMENT RÉCIPROQUE : Un point n2 peut faire parti des T plus proche voisins d'un point n1
-    #           mais ce même point n1 peut ne pas faire parti des T plus proches voisins du point n2. Par conséquent, il faut que les deux points
-    #           se trouvent parmi les plus T corrélés de l'autre pour que l'arête soit conservée. !!!
-    #   - Le nom du fichier texte où sera sauvegardé le graph d'intersection résultant (défaut = "CrossNetwork.txt"). [string]
-    #   - La liste des attributs d'arêtes à ne pas écrire dans le fichier de sauvegarde du graph (défaut = []) [Liste de string]
-    #   - Le choix de l'affichage du nombre de voisins trouvés pour chaque point renseigné (défaut = Pas d'affichage). [boolean]
-    #   - Le choix de l'affichage du temps de construction total du graph d'intersection (défaut = Pas d'affichage). [boolean]
-    #   - Le choix de retourné le graph construit (défaut = Pas de retour). [boolean]
-    # Affichage du nombre d'arrêtes retenus.
-    # Rendu : None ou le graph.
+                                       threshold_neighbours=None , search_tps=False , global_tps=False):
+    """
+    From a list of at least one dataframe, generates a network of coexpressed data using Pearson's Correlation Coefficient (PCC).
+    For each couple of genes in the dataframes, the genes are linked by an edge if their PCC is higher or equal to a threshold in absolute value.
+    If several dataframes are provided, all of them must give a PCC that checks the threshold and be of the same sign for the genes to be linked.
     
+    input1 : A list of Pandas dataframe.
+        All of them must contain a column called 'ID_REF' and these columns must contain the same list of genes but necessary in the same order.
+    input2 : A list of genes (default value = None).
+        If provided, the function will only look at these genes.
+        If not, it will look at all genes from the first dataframe.
+    input3 : A list of anchor genes (default value = None).
+        If provided, the function will only calculate the PCCs for couples with at least one of these genes.
+        If not, it will calculate the PCCs for all couples.
+    input4 : A numeral value (default value = 0.5) that filters out any PCC with a lower absolute value.
+        Any value lower or equal to 0 will make the function keep all calculated PCCs.
+        Any value higher or equal to 1 will make the function filter out all calculated PCCs.
+    input5 : An Integer value (default value = None). HIGHLY UNADVISED TO USE AS IT IS DEPENDANT ON THE ORDER IN WHICH THE GENES HAVE BEEN ADDED TO THE NETWORK.
+        If provided, the function will only keep in the network as much neighbors per genes. The neighbors will be those with the highest PCCs in absolute value.
+        If not, it will will keep all neighbors.
+    input6 : A Boolean value (default value = False).
+        If set to True, the function will write on the console the time passed to analyzed each gene, as well as the time passed since the function's call every 1000 genes.
+    input7 : A Boolean value (default value = False).
+        If set to True, the function will write on the console the time passed since it's call after the network has been fully built, as well as the number of nodes and edges the later contains.
+
+    output1 : The co-expression network.
+    """
+
     start = time.time()
     
     ### Récupération de l'entièreté des points en cas de liste d'étude non fournie
@@ -1909,7 +1929,7 @@ def ThresholdedCrossNetworkConstancy_5(dataframe_list , gene_list=None , anchor_
     
     print(f"Composition du graph : {m} points et {n} arêtes.")
 
-    if ret == True : return G
+    return G
     
 #=====================================================================
 
@@ -3122,8 +3142,57 @@ def Cluster_filtering_2(df , n_points=None , method='KMeans' , n_clusters=2 ,
                         n_neighbors=2 , random_state=0 , affinity='euclidean' , 
                         linkage='ward' , distance_threshold=None , algo='auto' , factor=1 ,
                         RBH=False , plot=False , title=None , xlabel=None , ylabel=None ,
-                        title_size = 20 , label_size=20 , tick_size = 20):
-    ### Variante : dico retourné différent selon version KNN (v1 = juste voisins, v2 = voisins+distances)
+                        title_size=20 , label_size=20 , tick_size=20):
+    """
+    Applies one out of several clustering algorithms and returns the results.
+
+    input1 : A Pandas dataframe.
+    input2 : An Integer value (default value = None).
+        If customized to N, the function will only apply the chosen algorithm to the N first rows from the dataframe.
+        If not, the function will look at all rows.
+    input3 : A clustering algorithm designation (default value = 'KMeans').
+        Accepted values are 'KMeans', 'Spectral', 'Affinity', 'Agglomerative', 'KNN_1' and 'KNN_2'.
+    input4 : An Integer value (default value = 2).
+        ONLY USED BY ALGORITHM 'KMeans', 'Spectral' or 'Agglomerative'.
+    input5 : An Integer value (default value = 2).
+        ONLY USED BY ALGORITHM 'KNN_1'.
+    input6 : An Integer value (default value = 0).
+        ONLY USED BY ALGORITHM 'KMeans', 'Spectral' or 'Affinity'.
+    input7 : A string value (default value = 'euclidean').
+        ONLY USED BY ALGORITHM 'Agglomerative'.
+    input8 : A string value (default value = 'ward').
+        Accepted values are 'ward', 'complete', 'average' and 'single'.
+        ONLY USED BY ALGORITHM 'Agglomerative'.
+    input9 : A Float value (default value = None).
+        ONLY USED BY ALGORITHM 'Agglomerative'.
+    input10 : A string value (default value = 'auto').
+        Accepted values are 'auto', 'ball_tree', 'kd_tree' and 'brute'.
+        ONLY USED BY ALGORITHM 'KNN_1' or 'KNN_2'.
+    input11 : A numeral value (default value = 1).
+        ONLY USED BY ALGORITHM 'KNN_2'.
+    input12 : A Boolean value (default value = False).
+        ONLY USED BY ALGORITHM 'KNN_1' or 'KNN_2'.
+        If set to True, the function will only keep genes as neighbors if both genes are in each other's nearest neighborhood.
+    input13 : A Boolean value (default value = False).
+        USABLE FOR ALL ALGORITHMS EXCEPT 'KNN_1' or 'KNN_2'.
+        If set to True, the function will display a bar plot indicating the size of each calculated clusters.
+        CAUTION : When displaying the bar plot, the program pauses. The display has to be closed for the program to resume it's run.
+    input14, 15 and 16 : String values (default values = None).
+        ONLY USED IF input13 IS SET TO TRUE.
+        If customized, the function will write the custom values on the bar plot.
+    input17, 18 and 19 : Numeral values (default value = 20).
+        ONLY USED IF input13 IS SET TO TRUE.
+        If customized, the function will adjuste the bar plot's corresponding properties' sizes.
+
+    output1 : A dictionary..
+        If input3 is set to 'KNN_1' or 'KNN_2', the keys are the genes and the values are their initial nearest neighbors.
+        If input3 is set to 'Affinity', the keys are the clusters' number and the values are the cluster's central gene, the coordinates of the later and the list of genes inside the cluster.
+        If input3 is set to 'KMeans', the keys are the clusters' number and the values are the cluster's calculated center's coordinates and the list of genes inside the cluster.
+        If input3 is set to 'Spectral' or 'Agglomerative', the keys are the clusters' number and the values are the lists of genes inside each cluster.
+    output2 : A dictionary.
+        ONLY RETURNED IF input3 is set to 'KNN_1' or 'KNN_2'.
+        The keys are the genes and the values are their reciprocal nearest neighbors, a.k.a. genes that have the key gene among their nearest neighbors as well.
+    """
     
     if n_points==None : n_points = len(df)
     L_points = list(df['ID_REF'][0:n_points])
@@ -3162,7 +3231,7 @@ def Cluster_filtering_2(df , n_points=None , method='KMeans' , n_clusters=2 ,
                     if n1 in dico[n2] : dico_RBH[n1].append(n2)
             print("Clustering KNN : filtration RBH terminé")
 
-    if method == 'KNN_2' : # association de chaque point à ses voisins et leurs distances
+    elif method == 'KNN_2' : # association de chaque point à ses voisins et leurs distances
         for i,point in enumerate(L_points):
             dico[point] = []
             L_neig = Neighbors[i]
@@ -3193,7 +3262,8 @@ def Cluster_filtering_2(df , n_points=None , method='KMeans' , n_clusters=2 ,
                 if lab==i : groupe.append(L_points[j])
             center = L_points[cen_idx]
             dico[i] = (center,list(Centers_coord[i]),groupe)
-    else :
+    
+    else : # KMeans, Spectral or Agglomerative
         for i in range(n_clusters):
             groupe = []
             for j,lab in enumerate(Labels):
@@ -3319,6 +3389,21 @@ def KM1D_v2(df , col_num , n_points=None , n_clusters=3 , random_state=0 , plot=
 #=====================================================================
 
 def KM1D_v3(df , col_num , n_points=None , n_clusters=3 , random_state=0):
+    """
+    Applies a KMeans algorithm on a given column of a dataframe and return the result. The clusters are sorted by ascending order of their centers' values.
+
+    input1 : A Pandas dataframe who's first column must be named 'ID_REF'.
+    input2 : A Integer value indicating which column will be analyzed.
+        The function follows an index-based logic starting from the first non-'ID_REF' column.
+        In other words, the dataframe's second column (who's original index is 1 in the dataframe) is called by a value of 0 since it's the first non-'ID_REF' column.
+    input3 : An Integer value (default value = None).
+        If customized to N, the function will only apply the algorithm to the N first values from the studied column.
+        If not, the function will look at all values.
+    input4 : An Integer value (default value = 3).
+    input5 : An Integer value (default value = 0).
+    
+    output1 : A dictionary where the keys are the genes' names and the values are the id number of the cluster the gene has been put in.
+    """
     
     if n_points==None : n_points = len(df)
     
