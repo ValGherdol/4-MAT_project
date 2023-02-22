@@ -8,9 +8,13 @@ For a detailed description of the program (rules of use, analysis methods' expla
 This package folder initially contains the following files (arranged by type):
 
 - Python files :
-	- 4-MAT_XXXX_YY_ZZ.py : the core code file of the program. The XYZ characters stands for the date of the lastest update.
-	- Steps_functions.py : the first auxiliary code file containing most of the program's functions' definitions.
-	- NPC_functions.py : the seconde auxiliary code file containing the functions' definitions for the NPC analysis step.
+	- 4-MAT_XXXX_YY_ZZ.py : the main code file of the program. The XYZ characters stands for the date of the lastest update.
+	- Setting_functions.py : the first auxiliary code file containing the definitions of functions the main code file uses to set the parameters and load the data.
+	- PCEIN_functions.py : the second auxiliary code file containing the definitions of functions the main code file uses during the first analysis method.
+	- KNN_RBH_function.py : the third auxiliary code file containing the definitions of functions the main code file uses during the second analysis method.
+	- NPC_functions.py : the fourth auxiliary code file containing the definitions of functions the main code file uses during the third analysis method.
+	- ClusterPath_functions.py : the fifth auxiliary code file containing the definitions of functions the main code file uses during the fourth analysis method.
+	- Consensus_functions.py : the sixth auxiliary code file containing the definitions of functions the main code file uses during the consensus calculation.
 - Text files :
 	- Arguments.txt : this file describs the settings of the program and how to customize them.
 	- Pool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
