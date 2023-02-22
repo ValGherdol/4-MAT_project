@@ -5,9 +5,11 @@ At time of creation, this package has been used in the hope to find missing gene
 
 For a detailed description of the program (rules of use, analysis methods' explanation, resulting files), please check the 4-MAT USER MANUAL.
 
-This package folder initially contains the following files (arranged by type):
+This package initially contains the following files :
 
-- Python files :
+- You will find in the main folder (other than the current README) :
+	- 4-MAT USER MANUAL.docx : the user manual which explains in details how the program works.
+- You will find in the Code folder :
 	- 4-MAT_XXXX_YY_ZZ.py : the main code file of the program. The XYZ characters stands for the date of the lastest update.
 	- Setting_functions.py : the first auxiliary code file containing the definitions of functions the main code file uses to set the parameters and load the data.
 	- PCEIN_functions.py : the second auxiliary code file containing the definitions of functions the main code file uses during the first analysis method.
@@ -15,19 +17,17 @@ This package folder initially contains the following files (arranged by type):
 	- NPC_functions.py : the fourth auxiliary code file containing the definitions of functions the main code file uses during the third analysis method.
 	- ClusterPath_functions.py : the fifth auxiliary code file containing the definitions of functions the main code file uses during the fourth analysis method.
 	- Consensus_functions.py : the sixth auxiliary code file containing the definitions of functions the main code file uses during the consensus calculation.
-- Text files :
 	- Arguments.txt : this file describs the settings of the program and how to customize them.
+- You will find in the Data folder :
 	- Pool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
 	- Pool_16428.txt : this file contains an ordered list of 16428 genes (anchors and candidats) to be analysed by the program.
-	- Pool_Dormancy.txt : this file contains the ordered list of anchor genes whose role is to promote Dormancy.
-	- Pool_Germination.txt : this file contains the ordered list of anchor genes whose role is to promote Germination.
-- Csv files, each containing a transcriptomic dataset of the genes to be analysed:
-	- Data_X.csv (with X = 1,2,3) contains transcriptomic data for Pool_9103.
-	- Data_0.csv contains the merged data from Data_X.csv.
-	- Data_Ya.csv (with Y = 2,3,5,6) contains transcriptomic data for Pool_16428.
-	- Data_0a.csv contains the merged data from Data_Ya.scv.
-	NOTE : "merging" the data means that for each gene, the data vectors from the concerned datasets have been regrouped into a single vector.
-- Docx file : the user manual which explains in details how the program works.
+	- Pool_Dormancy.txt : this file contains an ordered list of anchor genes whose role is to promote Dormancy.
+	- Pool_Germination.txt : this file contains an ordered list of anchor genes whose role is to promote Germination.
+	- Data_X_9103.csv (with X = 1,2,3) contains transcriptomic data for Pool_9103.
+	- Data_1-2-3_9103.csv contains the merged data from Data_X.csv.
+	- Data_Y_16428.csv (with Y = 2,3,5,6) contains transcriptomic data for Pool_16428.
+	- Data_2-3-5-6_16428.csv contains the merged data from Data_Y.csv.
+	NOTE : "merging" the data means that for each gene, the data vectors from the concerned datasets have been concatenated into a single vector.
 
 Quick description of 4-MATS's analysis methods :
 - Method 1 - Pearson based Co-Expression Intersected Network : This method calculates the Pearson's Correlation Coefficient (PCC) of couples of genes throughout all datasets. A couple of two given genes is retained if in all provided dataset, the couple shows PCCs that are higher than a threshold in absolute value and are of the same sign (either all positives or all negatives).
