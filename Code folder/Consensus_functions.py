@@ -7,11 +7,11 @@ import networkx as nx
 
 # Liste of the functions defined in this file :
 #   - assoc_redundancy
-#
-#
-#
-#
-#
+#   - saveAnchorConsensusData
+#   - saveResultByAnchor
+#   - saveResultByCandidates
+#   - buildConsensusNetwork
+#   - saveNetwork
 
 #=====================================================================
 #=====================================================================
@@ -247,7 +247,7 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
                     file.write(line)
 
 #=====================================================================
-def builtConsensusNetwork(association_dict , D_steps_names):
+def buildConsensusNetwork(association_dict , D_steps_names):
 
     """
     """
@@ -346,7 +346,4 @@ def saveNetwork(graph , candidate_list , anchor_dict , anchor_lists=[] , label_l
             for k,v in D_attr.items(): line += f" ; {k}:{str(v)}"
             file.write(line+'\n')
 
-#=====================================================================
-#=====================================================================
-#=====================================================================
 #=====================================================================
