@@ -659,7 +659,7 @@ if consensus :
     with open(Log_file,'a') as file : file.write(f"Candidate-ordered results saved.\n")
 
     ### Building and Saving the final network
-    G , L_anchors , L_candidates , D_anchors = Cons_fnc.builtConsensusNetwork(D_assoc , D_steps_names)
+    G , L_anchors , L_candidates , D_anchors = Cons_fnc.buildConsensusNetwork(D_assoc , D_steps_names)
 
     if L_L_anchors != [] : # If anchors have been provided
         print(f"Total genes : {len(G.nodes)} / {len(L_anchors)} anchors / {len(L_candidates)} candidates")
