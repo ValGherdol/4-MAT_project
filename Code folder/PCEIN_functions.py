@@ -194,7 +194,7 @@ def buildPearsonCoExpressionIntersectedNetwork(dataframe_list , gene_list=None ,
     #            print("\n--------------------\n")
             if search_tps :
                 if (i+1)%1000 == 0 : print(f"Gene {n1} processed in {time_count(time.time()-t_node)} ({i+1}). Time since launch : {time_count(time.time()-start)}")
-                else : print(f"Gene {n1} processed in {time_count(time.time()-t_node)} ({i+1}/{len(gene_list)})")
+                else : print(f"Gene {n1} processed in {time_count(time.time()-t_node)} ({i+1}/{len(anchor_list)})")
 
     return G
     
