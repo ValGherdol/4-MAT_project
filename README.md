@@ -9,6 +9,7 @@ This package initially contains the following files :
 
 - You will find in the main folder (other than the current README) :
 	- 4-MAT USER MANUAL.docx : the user manual which explains in details how the program works.
+	- Block Diagram.pdf : a diagram to visualize how the different code files interact with one another.
 - You will find in the Code folder :
 	- 4-MAT_XXXX_YY_ZZ.py : the main code file of the program. The XYZ characters stands for the date of the lastest update.
 	- Setting_functions.py : the first auxiliary code file containing the definitions of functions the main code file uses to set the parameters and load the data.
