@@ -18,12 +18,12 @@ This package initially contains the following files :
 	- NPC_functions.py : the fourth auxiliary code file containing the definitions of functions the main code file uses during the third analysis method.
 	- ClusterPath_functions.py : the fifth auxiliary code file containing the definitions of functions the main code file uses during the fourth analysis method.
 	- Consensus_functions.py : the sixth auxiliary code file containing the definitions of functions the main code file uses during the consensus calculation.
-	- Arguments.txt : this file describs the settings of the program and how to customize them.
+	- Parameters.txt : this file describs the settings of the program and how to customize them.
 - You will find in the Data folder :
-	- Pool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
-	- Pool_16428.txt : this file contains an ordered list of 16428 genes (anchors and candidats) to be analysed by the program.
-	- Pool_Dormancy.txt : this file contains an ordered list of anchor genes whose role is to promote Dormancy.
-	- Pool_Germination.txt : this file contains an ordered list of anchor genes whose role is to promote Germination.
+	- GlobalPool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
+	- GlobalPool_16428.txt : this file contains an ordered list of 16428 genes (anchors and candidats) to be analysed by the program.
+	- AnchorPool_Dormancy.txt : this file contains an ordered list of anchor genes whose role is to promote Dormancy.
+	- AnchorPool_Germination.txt : this file contains an ordered list of anchor genes whose role is to promote Germination.
 	- Data_X_9103.csv (with X = 1,2,3) contains transcriptomic data for Pool_9103.
 	- Data_1-2-3_9103.csv contains the merged data from Data_X.csv.
 	- Data_Y_16428.csv (with Y = 2,3,5,6) contains transcriptomic data for Pool_16428.
