@@ -40,10 +40,10 @@ Global gene pool : GlobalPool_16428.txt
 Anchor Genes lists : AnchorPool_Dormancy.txt,AnchorPool_Germination.txt
 Anchor Genes labels : Dormancy,Germination
 Anchor colors : 0,1,1/1,0.5,0
-Steps list : 4
+Steps list : 1,2,3,4
 Consensus step : 1
-Result folder name : Def_Result 2-3-5-6 Fus avec ClusterPath 2 deviations
-Linkage dictionary : Result_0_dictionary.pickle
+Result folder name : default
+Linkage dictionary : default
 
 >>> Step 1 : Co-Expression by Pearson's Correlation Coefficient
 > (1) MANDATORY	: A Boolean-like Integer indicating if you wish for the correlations to be calculated between all couples of genes or only 
