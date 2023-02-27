@@ -239,14 +239,14 @@ def saveNetworkData(graph , L_anchors_labels=[] , L_anchors_list=[] , dataframe_
     Saves the general data of each node from a co-expression network.
 
     input1 : A co-expression network in the form of a Networkx graph.
-    input2 : A list of gene labels (dafault value = an empty list).
+    input2 : A list of gene labels (default value = an empty list).
         If provided, the function will label some genes with the corresponding value and the rest of the genes with the word 'Candidate'.
         If not, all genes will be labeled 'Candidate'.
     input3 : A list of lists of genes (default value = an empty list).
         If provided, the function will associate the label from input2 to the genes contained in the corresponding list.
         THERE MUST BE AS MANY LISTS OF GENES AS THERE ARE LABELS. IF A GENE IS IN SEVERAL LISTS, IT WILL ALWAYS BE GIVEN THE LABEL OF THE FIRST LIST ITS ENCOUNTERED IN.
     input4 : A name for the created file (default value = 'Data_PearsonGraph.csv').
-        If customized, make sure your file hase a csv extension.
+        If customized, make sure your file has a csv extension.
     input5 : A Integer value (default value = None).
         If customized, the function will write on the console the number of genes saved every time this number is a multiple of the input value.
         

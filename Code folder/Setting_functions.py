@@ -2,6 +2,7 @@ import sys
 import os
 from datetime import datetime
 import pandas as pd
+import pickle
 
 #=====================================================================
 #=====================================================================
@@ -102,7 +103,7 @@ def settings(setting_file , Nb_datasets) :
         with open(D_args['Linkage dictionary'],'rb') as file : D_assoc = pickle.load(file)
 
     ### P-CEIN settings ------------------------------------------------------------------
-    D_args['Anchor centered'] = bool(int(D_args['Anchor centered']))
+    D_args['Anchor centered P-CEIN'] = bool(int(D_args['Anchor centered P-CEIN']))
 
     if D_args['Pearson principal threshold'] == 'default' : D_args['Pearson threshold'] = 0.5
     elif ',' in D_args['Pearson principal threshold'] :
@@ -119,9 +120,7 @@ def settings(setting_file , Nb_datasets) :
         D_args['Minimum neighborhood P-CEIN'] = D_args['Minimum neighborhood P-CEIN'].split(',')
         for i,a in enumerate(D_args['Minimum neighborhood P-CEIN']): D_args['Minimum neighborhood P-CEIN'][i] = int(a)
 
-    D_args['Research time announcement'] = bool(int(D_args['Research time announcement']))
-
-    D_args['Global time announcement'] = bool(int(D_args['Global time announcement']))
+    D_args['Research time announcement P-CEIN'] = bool(int(D_args['Research time announcement P-CEIN']))
 
     D_args['New Network'] = bool(int(D_args['New Network']))
 
@@ -154,6 +153,16 @@ def settings(setting_file , Nb_datasets) :
     ### ClusterPath settings -------------------------------------------------------------
     if D_args['Number of clusters'] == 'default' : D_args['Number of clusters'] = 3
     else : D_args['Number of clusters'] = int(D_args['Number of clusters'])
+
+    if D_args['Maximum deviation'] == 'default' : D_args['Maximum deviation'] = 0
+    elif ',' in D_args['Maximum deviation'] :
+        D_args['Maximum deviation'] = D_args['Maximum deviation'].split(',')
+        for i,a in enumerate(D_args['Maximum deviation']): D_args['Maximum deviation'][i] = int(a)
+    else : D_args['Maximum deviation'] = int(D_args['Maximum deviation'])
+
+    D_args['Anchor centered CP'] = bool(int(D_args['Anchor centered CP']))
+
+    D_args['Research time announcement CP'] = bool(int(D_args['Research time announcement CP']))
 
     ### Consensus settings ---------------------------------------------------------------
     if D_args['Consensus levels list'] == 'default' : D_args['Consensus levels list'] = [1,2,3,4]
@@ -219,11 +228,24 @@ def anchorGenePools(anchor_files_list , globalGenePool):
 def linkageDictionary(link_dict , setting_dict , folder_name , globalGenePool , anchorGeneLists , gene_labels):
 
     """
+    Initializes a new, empty linkage dictionary.
+    Instanciates the name of the variable pointing to the dictionary, be it new or loaded.
+
+    input1 : A dictionary.
+        If empty, fills it with tuples of genes and labels as keys and empty sub-dictionaries as values.
+    input2 : A dictionary of processed parameters.
+    input3 : A name for a folder in which the results will be put.
+    inpupt4 : A list of genes.
+    input5 : A list of anchor genes sub-lists.
+    input6 : A list of anchor labels.
+
+    output1 : The linkage dictionary.
+    output2 : The name of the linkage dictionary file.
     """
 
     if link_dict == {} : # If the linkage dictionary is new
         Result_dict_file = f"{folder_name}Result_0_dictionary.pickle"
-        if setting_dict['Anchor Genes lists'] != [] : # if anchors are provided
+        if setting_dict['Anchor Genes lists'] != [] : # If anchors are provided
             for n in globalGenePool :
                 for i,L_anchors in enumerate(anchorGeneLists) :
                     if n in L_anchors :
@@ -231,7 +253,7 @@ def linkageDictionary(link_dict , setting_dict , folder_name , globalGenePool , 
                         break
         else : # If no anchors are provided
             for n in globalGenePool : link_dict[(n,'Candidate')] = {}
-    else : Result_dict_file = f"{folder_name}{D_args['Linkage dictionary']}"
+    else : Result_dict_file = f"{folder_name}{setting_dict['Linkage dictionary']}"
 
     return link_dict , Result_dict_file
 #=====================================================================

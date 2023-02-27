@@ -28,7 +28,7 @@ def assoc_redundancy(association_dict , step_dict , level_list):
 
     output1 : A dictionary with the following content :
         - An 'ID_REF' key with a list of anchor gene names as value.
-        - A 'Class' key with a list of anchor labels as value.
+        - A 'Label' key with a list of anchor labels as value.
         - A '#Unique' key with a list of Integers as value.
             Indicates the number of unique candidates across all methods.
         - Four '#k-Method(s)' keys (with k going from 1 to 4) with lists of Integers as values.
@@ -38,7 +38,7 @@ def assoc_redundancy(association_dict , step_dict , level_list):
             NOTE : The Pearson method is split in two keys (one labeled 'Pos', the other 'Neg') to separate the positive and negative correlations.
     output2 : A dictionary with anchor gene names as keys and sub-dictionaries as values.
         Each sub-dictionary has the following content :
-            - A 'class' key with an anchor label as value.
+            - A 'Label' key with an anchor label as value.
             - Four 'k' keys (with k going from 1 to 4) with list gene names as values.
                 Indicate the number of unique candidates found by exactly k methods.
     output3 : A dictionary with anchor names as keys and sub-dictionaries as values.
@@ -46,7 +46,7 @@ def assoc_redundancy(association_dict , step_dict , level_list):
         The vectors indicates which method(s) has found the association between the anchor key and the candidate key.
     """
 
-    D_redundancy = {'ID_REF':[],'Class':[],'#Unique':[]}
+    D_redundancy = {'ID_REF':[],'Label':[],'#Unique':[]}
     a = list(association_dict.keys())[0] # First key in the Result dictionary (i.e. a gene)
     Num_methods = 0 # Number of methods used to fill the Result dictionary
     L_n_method = [] # List of the numbers of methods
@@ -74,10 +74,10 @@ def assoc_redundancy(association_dict , step_dict , level_list):
     D_vecteurs = {}
     for gene,voisinages in association_dict.items(): # For each gene that act as a key in the Result dictionary (a.k.a anchor genes)
         # Get the current gene's data
-        ref,clas = gene
+        ref,label = gene
         D_redundancy['ID_REF'].append(ref)
-        D_redundancy['Class'].append(clas)
-        D_noms[ref] = {'class':clas}
+        D_redundancy['Label'].append(label)
+        D_noms[ref] = {'Label':label}
         D_vecteurs[ref] = {}
         for i in reversed(range(Num_methods)) : D_noms[ref][i+1] = []
         
@@ -85,16 +85,16 @@ def assoc_redundancy(association_dict , step_dict , level_list):
         L_neig = []
         L_PCEIN_pos , L_PCEIN_neg = [],[]
         L_KNN = []
+        L_CP = []
         for methode,L_voisins in voisinages.items():
             if methode != step_dict[3] : # Pearson Co-Expression, KNN-RBH or Cluster Path
-                if methode == step_dict[4] : L_neig += L_voisins # Cluster Path
-                else : # Pearson Co-Expression, KNN-RBH
-                    for (n,c) in L_voisins :
-                        L_neig.append(n)
-                        if methode == step_dict[1] : # Pearson Co-Expression
-                            if c > 0 : L_PCEIN_pos.append(n)
-                            else : L_PCEIN_neg.append(n)
-                        else : L_KNN.append(n) # KNN-RBH
+                for (n,c) in L_voisins :
+                    L_neig.append(n)
+                    if methode == step_dict[1] : # Pearson Co-Expression
+                        if c > 0 : L_PCEIN_pos.append(n)
+                        else : L_PCEIN_neg.append(n)
+                    elif methode == step_dict[2] : L_KNN.append(n) # KNN-RBH 
+                    elif methode == step_dict[4] : L_CP.append(n) # Cluster Path
             else : # Network Properties
                 for i,rank in enumerate(L_voisins) : L_neig += rank
         Set_neig = set(L_neig)
@@ -137,7 +137,7 @@ def assoc_redundancy(association_dict , step_dict , level_list):
                         sous_D[f"{step_dict[3]}-{n+1}"] += 1
                         D_vecteurs[ref][name][3] = '1'
                         break
-            if (step_dict[4] in L_methods) and (name in voisinages[step_dict[4]]) : # Cluster Path
+            if (step_dict[4] in L_methods) and (name in L_CP) : # Cluster Path
                 N_meth += 1
                 sous_D[step_dict[4]] += 1
                 D_vecteurs[ref][name][4] = '1'
@@ -158,6 +158,30 @@ def assoc_redundancy(association_dict , step_dict , level_list):
 def saveAnchorConsensusData(D_redundancy , file_name="AnchorConsensus.csv"):
 
     """
+    Saves the general data of each anchor gene.
+
+    input1 : A dictionary with anchor genes as keys and sub-dictionaries as values.
+        Each sub-dictionary has method names as keys and lists of associated candidate genes as values.
+    input2 : A name for the created file (default value = 'Data_PearsonGraph.csv').
+        If customized, make sure your file has a csv extension.
+        
+    output1 : A Pandas dataframe with the following data for each gene :
+        - the anchor's name (column 'ID_REF')
+        - the anchor's label (column 'Label')
+        - the anchor's number of unique associated candidate genes (column '#Unique')
+        - the anchor's number of unique associated candidate genes found by exacly one method (column '#1-Method')
+        - the anchor's number of unique associated candidate genes found by exacly two methods (column '#2-Methods')
+        - the anchor's number of unique associated candidate genes found by exacly three methods (column '#3-Methods')
+        - the anchor's number of unique associated candidate genes found by exacly four methods (column '#4-Methods')
+        - the anchor's number of unique associated candidate genes found by the first method (two columns):
+            - number of unique associated candidate genes with a positive Pearson's correlation (column 'P-CEIN Pos')
+            - number of unique associated candidate genes with a negative Pearson's correlation (column 'P-CEIN Neg')
+        - the anchor's number of unique associated candidate genes found by the second method (column 'KNN-RBH')
+        - the anchor's number of unique associated candidate genes found by the third method (N columns, named NPC-X):
+            - N equals the number of provided datasets
+            - X goes from 1 to N and represents the number of datasets a given association to the same candidate gene has been found in.
+        - the anchor's number of unique associated candidate genes found by the fourth method (column 'ClusterPath')
+        The dataframe is sorted by descending values of the successive '#x-Method' columns.
     """
 
     DF_redundancy = pd.DataFrame.from_dict(D_redundancy)
@@ -176,6 +200,20 @@ def saveAnchorConsensusData(D_redundancy , file_name="AnchorConsensus.csv"):
 def saveResultByAnchor(consensus_df , level_list , D_names , anchor_lists=[] , label_list=[] , file_name="ResultByAnchors.txt"):
 
     """
+    Saves the spliting of all unique candidate genes associated to each anchor gene.
+
+    input1 : A Pandas dataframe with the general data of each anchor gene.
+    input2 : A list of levels of associations that will be saved in the resulting file.
+    input3 : A dictionary with anchor gene names as keys and sub-dictionaries as values.
+        Each sub-dictionary has the following content :
+            - A 'Label' key with an anchor label as value.
+            - Four 'k' keys (with k going from 1 to 4) with list gene names as values.
+                Indicate the number of unique candidates found by exactly k methods.
+    input4 : A list of anchor gene sub-lists.
+    input5 : A list of anchor gene labels.
+    input6 : A file name to write the results in.
+
+    output1 : None.
     """
     
     with open(file_name,'w') as file:
@@ -184,11 +222,11 @@ def saveResultByAnchor(consensus_df , level_list , D_names , anchor_lists=[] , l
         for niv in reversed(level_list) : D_n[niv] = 0
         for anchor in L_names :
             D_meth = D_names[anchor]
-            classe = D_meth['class']
-            line = f">{anchor} ({classe})\n"
+            label = D_meth['Label']
+            line = f">{anchor} ({label})\n"
             file.write(line)
             for niv,L_noms in D_meth.items():
-                if niv == 'class' or niv not in level_list : continue
+                if niv == 'Label' or niv not in level_list : continue
                 line = f"Lv.{niv} :"
                 if len(L_noms)==0 : line += ' None\n'
                 else :
@@ -213,6 +251,24 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
                            anchor_lists=[] , label_list=[] , file_name="ResultByCandidates.txt"):
 
     """
+    Saves all unique associations.
+
+    input1 : A Pandas dataframe with the general data of each anchor gene.
+    input2 : A list of levels of associations that will be saved in the resulting file.
+    input3 : A dictionary with numbers as keys and method names as values.
+    input4 : A dictionary with anchor gene names as keys and sub-dictionaries as values.
+        Each sub-dictionary has the following content :
+            - A 'Label' key with an anchor label as value.
+            - Four 'k' keys (with k going from 1 to 4) with list gene names as values.
+                Indicate the number of unique candidates found by exactly k methods.
+    input5 : A dictionary with anchor names as keys and sub-dictionaries as values.
+        Each sub-dictionary has candidate names as keys and vector of Integers as values.
+        The vectors indicates which method(s) has found the association between the anchor key and the candidate key.
+    input6 : A list of anchor gene sub-lists.
+    input7 : A list of anchor gene labels.
+    input8 : A file name to write the results in.
+
+    output1 : None.
     """
 
     with open(file_name,'w') as file :
@@ -228,9 +284,9 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
         for niv in reversed(level_list) : D_n[niv] = 0
         for anchor in L_names :
             D_meth = D_names[anchor]
-            classe = D_meth['class']
+            label = D_meth['Label']
             for niv,L_noms in D_meth.items():
-                if (niv == 'class') or (niv not in level_list) or (len(L_noms)==0) : continue
+                if (niv == 'Label') or (niv not in level_list) or (len(L_noms)==0) : continue
                 for name in L_noms :
                     line = ''
                     vecteur = D_vectors[anchor][name]
@@ -242,7 +298,7 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
                             break
                     if not ancre : line += f"{name}"
                     
-                    if anchor_lists != [] : line += '\t'+'\t'.join([anchor,classe,str(niv)])+'\t'+'\t'.join(vecteur)+'\n'
+                    if anchor_lists != [] : line += '\t'+'\t'.join([anchor,label,str(niv)])+'\t'+'\t'.join(vecteur)+'\n'
                     else : line += '\t'+'\t'.join([anchor,str(niv)])+'\t'+'\t'.join(vecteur)+'\n'
                     file.write(line)
 
@@ -250,6 +306,20 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
 def buildConsensusNetwork(association_dict , D_steps_names):
 
     """
+    Builds a network to visualize all associations.
+
+    input1 : The linkage dictionary, a dict with anchor genes as keys and sub-dictionary as values.
+        The sub-dictionaries have method names as keys and lists of data as values.
+    input2 : A dictionary with numbers as keys and method names as values.
+
+    output1 : A network graph with the following properties :
+        - Nodes are genes.
+        - Edges are associations with the following attributes :
+            - A Consensus level (going from 1 to 4).
+            - A method result for each used method.
+    ouptut2 : A list of anchor genes.
+    output3 : A list of candidate genes.
+    output4 : A dictionary with anchor labels as keys and lists of anchors as values.
     """
 
     # Preparing the edges' attributes : consensus level and the result from each method
@@ -276,7 +346,7 @@ def buildConsensusNetwork(association_dict , D_steps_names):
     for gene,L_meth in association_dict.items(): # Processing the candidates for each anchor gene
         n1,category = gene
         for methode,voisins in L_meth.items(): # For each method
-            if methode in [D_steps_names[1] , D_steps_names[2]]: # Pearson Co-Expression or KNN-RBH : each element of 'voisins' is a tuple of a candidate and a float value
+            if methode in [D_steps_names[1] , D_steps_names[2] , D_steps_names[4]]: # Pearson Co-Expression, KNN-RBH or Cluster Path : each element of 'voisins' is a tuple of a candidate and a float value
                 for v in voisins :
                     n2,c = v[0],round(v[1],4)
                     if (n2 not in L_candidates) and (n2 not in L_anchors) : # If the candidate hasn't been encountered yet and isn't an anchor gene either, it is saved in a candidate-exclusive list
@@ -301,17 +371,6 @@ def buildConsensusNetwork(association_dict , D_steps_names):
                         if G[n1][n2][D_steps_names[3]] == 'NO': # Since the candidate is associated to the current anchor, the attributes are updated if not already
                             G[n1][n2][D_steps_names[3]] = rank+1 # The +1 is necessary, as the 'rank' variables start from 0
                             G[n1][n2]['Consensus'] += 1
-            else : # Cluster Path : 'voisins' is just a list of candidates
-                for n2 in voisins :
-                    if (n2 not in L_candidates) and (n2 not in L_anchors) : # If the candidate hasn't been encountered yet and isn't an anchor gene either, it is saved in a candidate-exclusive list
-                            L_candidates.append(n2)
-                    if (n1,n2) not in G.edges : # If the candidate hasn't been encountered yet and isn't an anchor gene either, it is saved in a candidate-exclusive list
-                        G.add_edge(n1 , n2)
-                        G[n1][n2].update(copy.deepcopy(D_attr))
-                    
-                    if G[n1][n2][D_steps_names[4]] == 'NO': # Since the candidate is associated to the current anchor, the attributes are updated if not already
-                        G[n1][n2][D_steps_names[4]] = 'YES'
-                        G[n1][n2]['Consensus'] += 1
 
     return G , L_anchors , L_candidates , D_anchors
     

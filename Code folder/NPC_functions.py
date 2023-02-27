@@ -225,6 +225,15 @@ def countNeighbors(G, node, specialNg):
 #=====================================================================
 
 def listNeighbors(G, node, specialNg):
+  """
+  Lists the special neighbors of a given node
+
+  input1 : A graph
+  input2 : A node
+  input3 : A list of special nodes
+
+  output1: The list of special neighbors
+  """
   neighbors = list(G.neighbors(node))
   
   list_special = []
@@ -581,5 +590,4 @@ def saveNetwork(graph , anchor_lists=[] , color_list=[] , file_name="NPC_Network
       for attr in L_attr : file.write(f" ; {attr}:{graph[n1][n2][attr]}")
       file.write('\n')
   
-#=====================================================================
 #=====================================================================
