@@ -40,18 +40,18 @@ Global gene pool : GlobalPool_16428.txt
 Anchor Genes lists : AnchorPool_Dormancy.txt,AnchorPool_Germination.txt
 Anchor Genes labels : Dormancy,Germination
 Anchor colors : 0,1,1/1,0.5,0
-Steps list : 1,2,3,4
+Steps list : 4
 Consensus step : 1
-Result folder name : default
-Linkage dictionary : default
+Result folder name : Def_Result 2-3-5-6 Fus avec ClusterPath 2 deviations
+Linkage dictionary : Result_0_dictionary.pickle
 
 >>> Step 1 : Co-Expression by Pearson's Correlation Coefficient
 > (1) MANDATORY	: A Boolean-like Integer indicating if you wish for the correlations to be calculated between all couples of genes or only 
 >		  between couples with at least one anchor gene (0=all couples , 1=with at least one anchor).
 >		  CAUTION : This setting has a big impact of the processing time.
 > (2) OPTIONAL : A Float or set of Floats (each separated by a coma ',') indicating the PCC's threshold to respect for each dataset.
->		 A single Float means the same threshold is used for all datasets. A set of Floats means each threshold is used for
->		 the corresponding dataset in the provided order.
+>		 A single Float means the same threshold is used for all datasets. A set of Floats means each threshold is used for the corresponding 
+>		 dataset in the provided order.
 >		 CAUTION : If you wish for no threshold(s), set the value(s) explicitly to 0.
 >	Default value = 0.5 for all datasets.
 > (3) MANDATORY : An Integer indicating if you wish for a second threshold to be dynamically calculated (0=No , 1=Yes).
@@ -60,18 +60,15 @@ Linkage dictionary : default
 > (5) OPTIONAL : A set of Integers (separated by a coma ',') indicating the minimum number of anchor gene neighbors a candidate gene has to have
 >		 in order to be considered worthy of further studies on it. Each integer is associated to the anchor gene list in the same position.
 >	Default value = All candidates are kept regardless of their anchor neighborhood.
-> (6) TRIVIAL : A Boolean-like Integer indicating if you wish to print the calculation time for each gene of the global pool as the analysis runs 
->		(0=No , 1=Yes).
-> (7) TRIVIAL : A Boolean-like Integer indicating if you wish to print the execution time of each substep as the analysis runs (0=No , 1=Yes).
-> (8) TRIVIAL : A Boolean-like Integer indicating if you wish to calculate a new Co-Expression network or load a preexisting one (0=Load , 1=Calculate new one).
+> (6) TRIVIAL : A Boolean-like Integer indicating if you wish to print the calculation time for each gene of the global pool as the analysis runs (0=No , 1=Yes).
+> (7) TRIVIAL : A Boolean-like Integer indicating if you wish to calculate a new Co-Expression network or load a preexisting one (0=Load , 1=Calculate new one).
 >
-Anchor centered : 1
+Anchor centered P-CEIN : 1
 Pearson principal threshold : 0
 Pearson dynamic threshold : 1
 Dynamic threshold factor : 1.5
 Minimum neighborhood P-CEIN : default
-Research time announcement : 1
-Global time announcement : 1
+Research time announcement P-CEIN : 1
 New Network : 1
 
 >>> Step 2 : K-Nearest Neighbors with Reciprocal Best Hit
@@ -113,8 +110,20 @@ Minimum redundancy : default
 >>> Step 4 : Cluster Path
 > (1) OPTIONAL : An Integer indicating the number of clusters you wish to calculate for each timepoint of each provided dataset.
 >	Default value = 3 clusters (1 representing Dormancy, 1 Germination and 1 for genes unrelated to either).
+> (2) OPTIONAL : An Integer or set of Integers (each separated by a coma ',') indicating the maximum number of timepoints for which two genes are allowed to 
+>		 be in different clusters and still be associated at the end of the method.
+>		 A set of Integers means that each value is applied to each provided dataset separately. A single Integer acts as the global threshold for 
+>		 the total number of differences across all datasets.
+>	Default value = No difference allowed.
+> (3) MANDATORY	: A Boolean-like Integer indicating if you wish for the path deviation to be calculated between all couples of genes or only between couples 
+>		  with at least one anchor gene (0=all couples , 1=with at least one anchor).
+>		  CAUTION : This setting has a big impact of the processing time.
+> (4) TRIVIAL : A Boolean-like Integer indicating if you wish to print the calculation time for each gene of the global pool as the analysis runs (0=No , 1=Yes).
 >
 Number of clusters : default
+Maximum deviation : 2
+Anchor centered CP : 1
+Research time announcement CP : 1
 
 >>> Consensus Step
 > (1) OPTIONAL : A set on Integers (each separated by a coma ',') indicating which consensus levels you wish to be written in the resulting consensus texte file.
