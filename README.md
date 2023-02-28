@@ -19,6 +19,7 @@ This package initially contains the following files :
 	- ClusterPath_functions.py : the fifth auxiliary code file containing the definitions of functions the main code file uses during the fourth analysis method.
 	- Consensus_functions.py : the sixth auxiliary code file containing the definitions of functions the main code file uses during the consensus calculation.
 	- Parameters.txt : this file describs the settings of the program and how to customize them.
+	- Visualize_Network.py : an auxiliary code file allowing to visualize any network file created during a run of 4-MAT.
 - You will find in the Data folder :
 	- GlobalPool_9103.txt : this file contains an ordered list of 9103 genes (anchors and candidats) to be analysed by the program.
 	- GlobalPool_16428.txt : this file contains an ordered list of 16428 genes (anchors and candidats) to be analysed by the program.
@@ -40,3 +41,7 @@ Quick description of 4-MATS's analysis methods :
 - Method 4 - Cluster Path : This method segregates the genes by using several 1-dimensional K-Means algorithms. A K-Means clustering is run on each timepoint of a dataset and as the clusters are sorted by ascending order of their centroids' values, each gene can be associated to a vector indicating which cluster it belongs to in each timepoint. A couple of two given genes is retained if the two genes are associated to the same vector. If several datasets are provided, their vectors are put together to form a longer vector and the same logic as before applies to retain couples of genes.
 
 - End - Analysis Consensus : This final step of the program crosses all results from all the above methods and attributes to each association a level indicating how many methods have found it. The higher the level, it more relevant the association ought to be.
+
+- Network Visualization : When running the Visualize_Network.py code file, you can either :
+ 	- Just give a network file. The code will then draw all nodes and edges.
+ 	- Give a query of specific genes in addition to the network file. The code will then only draw those genes, their neighbors and the edges betwwen them. For each gene in the query, the console will also display a dataframe of all neighbors as well as the attributes of the edges.
