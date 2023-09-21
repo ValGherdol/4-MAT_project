@@ -1,0 +1,23 @@
+>Initial Data
+Global gene pool : 9103
+Total anchor pool : 110
+Dormancy genes : 62 / 70
+Germination genes : 48 / 54
+Number of datasets : 3
+-------------------------------------------------------
+>Step 4 : Cluster Path
+All datasets analyzed.
+Common path gene lists saved : 2147 paths found.
+Total number of allowed path deviations : 1/10.
+Lists of gene couples with deviant paths saved : 910 paths found.
+Network built and saved : 6349 genes and 25413 associations.
+End of Step 4. Time of execution : 17.56s
+Time since launch : 17.57s
+-------------------------------------------------------
+>Final Step : Methods Consensus
+Anchor-ordered results saved.
+Candidate-ordered results saved.
+Consensus network built : 7259 genes and 51273 associations.
+Consensus network saved.
+End of Final Step. Time of execution : 3.7s
+Time since launch : 21.27s
