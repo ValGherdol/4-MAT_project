@@ -29,7 +29,7 @@ This package initially contains the following files :
 	- Data_1-2-3_9103.csv contains the merged data from Data_X.csv.
 	- Data_Y_16428.csv (with Y = 2,3,5,6) contains transcriptomic data for Pool_16428.
 	- Data_2-3-5-6_16428.csv contains the merged data from Data_Y.csv.
-NOTE : "merging" the data means that for each gene, the data vectors from the concerned datasets have been concatenated into a single vector.
+ 	- NOTE : "merging" the data means that for each gene, the data vectors from the concerned datasets have been concatenated into a single vector.
 
 Quick description of 4-MATS's analysis methods :
 - Method 1 - Pearson based Co-Expression Intersected Network : This method calculates the Pearson's Correlation Coefficient (PCC) of couples of genes throughout all datasets. A couple of two given genes is retained if in all provided dataset, the couple shows PCCs that are higher than a threshold in absolute value and are of the same sign (either all positives or all negatives).
