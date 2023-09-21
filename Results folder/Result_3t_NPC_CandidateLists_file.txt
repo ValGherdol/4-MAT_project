@@ -1,0 +1,4 @@
+>Dormancy files :
+Export Result 2-3-5-6 Fus/Result_3a_NPC_Dormancy_for_Dataset_1_min13.txt
+>Germination files :
+Export Result 2-3-5-6 Fus/Result_3a_NPC_Germination_for_Dataset_1_min10.txt

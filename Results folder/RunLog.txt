@@ -1,0 +1,56 @@
+>Initial Data
+Global gene pool : 16428
+Total anchor pool : 114
+Dormancy genes : 65 / 70
+Germination genes : 49 / 54
+Number of datasets : 1
+-------------------------------------------------------
+>Step 1 : Pearson based Co-Expression Intersected Network
+Building of a new network with a 0.0 threshold.
+Full network built and saved : 16428 genes and 1866237 associations.
+Full network data saved.
+Dynamic secondary Pearson threshold calculated : 0.84.
+Dynamic Pearson network saved : 13425 genes and 134455 associations.
+Dynamic Pearson network data saved.
+End of Step 1. Run time : 10m21.72s
+Time since launch : 10m21.72s
+-------------------------------------------------------
+>Step 2 : K-Nearest Neighbors enhanced with Reciprocal Best Hit
+K-Neighborhoods calculated.
+K-Neighborhoods intersected.
+Initial network built : 16426 genes and 4808230 associations.
+Network filtered : 14360 genes and 4568455 associations.
+Network saved.
+End of Step 2. Time of execution : 15m13.36s
+Time since launch : 25m35.09s
+-------------------------------------------------------
+>Step 3 : Network Properties Closeness
+Dataset 1 dynamic minimum of Dormancy neighbors : 13.
+Dataset 1 dynamic minimum of Germination neighbors : 10.
+All datasets analyzed.
+Minimum dataset redundancy for candidates : 1/1.
+Neighborhoods intersected.
+Inter Dormancy candidates : 3965.
+Inter Germination candidates : 3898.
+Inter multi-label candidates : 2889.
+Candidate genes data saved.
+Network built and saved : 5068 genes and 118718 associations.
+End of Step 3. Time of execution : 18m19.18s
+Time since launch : 43m54.27s
+-------------------------------------------------------
+>Step 4 : Cluster Path
+All datasets analyzed.
+Common path gene lists saved : 3884 paths found.
+Total number of allowed path deviations : 2/11.
+Lists of gene couples with deviant paths saved : 5647 paths found.
+Network built and saved : 14513 genes and 121554 associations.
+End of Step 4. Time of execution : 1m9.56s
+Time since launch : 45m3.83s
+-------------------------------------------------------
+>Final Step : Methods Consensus
+Anchor-ordered results saved.
+Candidate-ordered results saved.
+Consensus network built : 15923 genes and 345936 associations.
+Consensus network saved.
+End of Final Step. Time of execution : 1m13.26s
+Time since launch : 46m17.09s
