@@ -46,4 +46,4 @@ Quick description of 4-MATS's analysis methods :
 
 - Network Visualization : When running the Visualize_Network.py code file, you can either :
  	- Just give a network file. The code will then draw all nodes and edges.
- 	- Give a query of specific genes in addition to the network file. The code will then only draw those genes, their neighbors and the edges betwwen them. For each gene in the query, the console will also display a dataframe of all neighbors as well as the attributes of the edges.
+ 	- Give a query of specific genes in addition to the network file. The code will then only draw those genes, their neighbors and the edges between them. For each gene in the query, the console will also display a dataframe of all neighbors as well as the attributes of the edges.
