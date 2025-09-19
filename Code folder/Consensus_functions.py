@@ -271,15 +271,17 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
     output1 : None.
     """
 
-    with open(file_name,'w') as file :
-        file.write("# WARNING : All associations marked as 'Yes' in the Anchor-to-Anchor column exist in 2 copies, one for each anchor serving as the candidate. Remember to half down the number of such associations when counting the total number of associations.\n")
-        
-        if anchor_lists != [] :line = '\t'.join(['Candidate','Anchor','Anchor Function','Anchor-to-Anchor','Consensus Level',
-                                                 f"{D_steps_names[1]} Pos",f"{D_steps_names[1]} Neg",
-                                                 D_steps_names[2],D_steps_names[3],D_steps_names[4]])+'\n'
-        else : line = '\t'.join(['Candidate 1','Candidate 2','Consensus Level',
-                                 f"{D_steps_names[1]} Pos",f"{D_steps_names[1]} Neg",
-                                 D_steps_names[2],D_steps_names[3],D_steps_names[4]])+'\n'
+    with open(file_name,'w') as file :        
+        if anchor_lists != [] :
+            file.write("# WARNING : All associations marked as 'Yes' in the Anchor-to-Anchor column exist in 2 copies, one for each anchor serving as the candidate. Remember to half down the number of such associations when counting the total number of associations.\n")
+            line = '\t'.join(['Candidate','Anchor','Anchor Function','Anchor-to-Anchor','Consensus Level',
+                              f"{D_steps_names[1]} Pos",f"{D_steps_names[1]} Neg",
+                              D_steps_names[2],D_steps_names[3],D_steps_names[4]])+'\n'
+        else : 
+            file.write("# WARNING : All associations exist in 2 copies, one for each gene serving as Candidate 1 while the other serves as Candidate 2. Actual number of unique associations is half the total number of associations present in this tab.\n")
+            line = '\t'.join(['Candidate 1','Candidate 2','Consensus Level',
+                              f"{D_steps_names[1]} Pos",f"{D_steps_names[1]} Neg",
+                              D_steps_names[2],D_steps_names[3],D_steps_names[4]])+'\n'
         file.write(line)
         L_names = list(consensus_df['ID_REF'])
         D_n = {}
