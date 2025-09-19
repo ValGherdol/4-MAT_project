@@ -272,7 +272,9 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
     """
 
     with open(file_name,'w') as file :
-        if anchor_lists != [] :line = '\t'.join(['Candidate','Anchor','Anchor Function','Consensus Level',
+        file.write("# WARNING : All associations marked as 'Yes' in the Anchor-to-Anchor column exist in 2 copies, one for each anchor serving as the candidate. Remember to half down the number of such associations when counting the total number of associations.\n")
+        
+        if anchor_lists != [] :line = '\t'.join(['Candidate','Anchor','Anchor Function','Anchor-to-Anchor','Consensus Level',
                                                  f"{D_steps_names[1]} Pos",f"{D_steps_names[1]} Neg",
                                                  D_steps_names[2],D_steps_names[3],D_steps_names[4]])+'\n'
         else : line = '\t'.join(['Candidate 1','Candidate 2','Consensus Level',
@@ -288,18 +290,13 @@ def saveResultByCandidates(consensus_df , level_list , D_steps_names , D_names ,
             for niv,L_noms in D_meth.items():
                 if (niv == 'Label') or (niv not in level_list) or (len(L_noms)==0) : continue
                 for name in L_noms :
-                    line = ''
                     vecteur = D_vectors[anchor][name]
-                    ancre = False
+                    ancre = 'No'
                     for i,L_anchors in enumerate(anchor_lists) :
-                        if name in L_anchors :
-                            line += f"{name}({label_list[i][0]})"
-                            ancre = True
-                            break
-                    if not ancre : line += f"{name}"
+                        if name in L_anchors : ancre = 'Yes' ; break
                     
-                    if anchor_lists != [] : line += '\t'+'\t'.join([anchor,label,str(niv)])+'\t'+'\t'.join(vecteur)+'\n'
-                    else : line += '\t'+'\t'.join([anchor,str(niv)])+'\t'+'\t'.join(vecteur)+'\n'
+                    if anchor_lists != [] : line = '\t'.join([name,anchor,label,ancre,str(niv)]+vecteur)+'\n'
+                    else : line = '\t'.join([name,anchor,str(niv)]+vecteur)+'\n'
                     file.write(line)
 
 #=====================================================================

@@ -95,7 +95,8 @@ def settings(setting_file , Nb_datasets) :
     elif D_args['Result folder name'] == 'None' : folder_name = ""
     else :
         folder_name = D_args['Result folder name']
-        if not os.path.isdir(D_args['Result folder name']) : os.mkdir(folder_name)
+        try : os.makedirs(folder_name)
+        except : pass
         folder_name += '/'
 
     if D_args['Linkage dictionary'] == 'default' : D_assoc = {}
@@ -204,22 +205,21 @@ def anchorGenePools(anchor_files_list , globalGenePool):
     output2 : The list of sub-lists of anchor genes from each anchor gene file that are in the global gene pool.
     output3 : The total list of anchor genes that are in the global gene pool.
     """
-
-    L_L_All_anchors = [] # List of all complete anchor genes lists
-    L_L_anchors = [] # List of anchor genes lists whose anchors are in the global gene pool
     
+    # List of all complete anchor genes lists
+    L_L_All_anchors = [[] for i in range(len(anchor_files_list))]
     for i,anchor_file in enumerate(anchor_files_list) :
-        L_L_All_anchors.append([])
-        L_L_anchors.append([])
         with open(anchor_file,'r') as file :
-            for line in file : L_L_All_anchors[i].append(line[0:-1])
+            for j,line in enumerate(file,1) : L_L_All_anchors[i].append(line[0:-1])
     
+    # List of anchor genes lists whose anchors are in the global gene pool
+    L_L_anchors = [[] for i in range(len(anchor_files_list))]
     for gene in globalGenePool :
         for i,L_All_anchors in enumerate(L_L_All_anchors) :
             if gene in L_All_anchors : L_L_anchors[i].append(gene)
 
-    L_Final_anchors = [] # List of all unique anchors
-    for L_anchors in L_L_anchors : L_Final_anchors += L_anchors
+    # List of all unique anchors
+    L_Final_anchors = [a for L_a in L_L_anchors for a in L_a]
     
     return L_L_All_anchors , L_L_anchors , L_Final_anchors
 
