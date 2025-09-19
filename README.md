@@ -31,7 +31,7 @@ This package initially contains the following files :
 	- Data_2-3-5-6_16428.csv contains the merged data from Data_Y.csv.
  	- NOTE : "merging" the data means that for each gene, the data vectors from the concerned datasets have been concatenated into a single vector.
 - You will find in the Results folder most of the expected results from a run of the program on the Data_2-3-5-6_16428.csv file according to the current state of the Parameters.txt file. For a description of all the results files, see the User Manual.
-	- Results are stored into two sub-folders titled 'Results 2023 (obsolete)' and 'Results 2025'. These sub-folders contain results from runs of two different versions of the program. (The 2023 version no longer being reproducible after a upgrade of the 'scikit-learn' python module used in Method 4 changed it's results in 2025).
+	- Results are stored into two sub-folders titled 'Results 2023' and 'Results 2025'. These sub-folders contain results from runs of two different versions of the program. (The 2023 version is no longer reproducible after a upgrade of the 'scikit-learn' python module used in Method 4 changed it's results in 2025).
 	- Three result files are missing in the sub-folder, for they are too large to be uploaded here. There respective default names are "Result_1a_P-CEIN_graph.txt", "Result_2_KNN-RBH_Graph.txt" and "Result_END_graph.txt". See the User Manual for their detailed descriptions.
 
 Quick description of 4-MATS's analysis methods :
